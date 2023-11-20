@@ -32,7 +32,7 @@ public class Example : MonoBehaviour
     void Start()
     {
         directionVector = genDirectionVector();
-        degrees = 20;
+        degrees = 45;
     }
 
     
