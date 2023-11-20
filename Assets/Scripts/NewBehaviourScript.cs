@@ -7,7 +7,7 @@ public class Example : MonoBehaviour
     public GameObject target;
 
     private float time = 0.0f;
-    public float directionChangeTime = 30f;
+    public float directionChangeTime;
     private Vector3 directionVector;
     private float degrees;
 
@@ -18,11 +18,14 @@ public class Example : MonoBehaviour
 
         // Increase time 
         time += Time.deltaTime;
+        Debug.Log("Time: " + time);
+        Debug.Log("Direction change time: " + directionChangeTime);
 
         // Change direction if it is time
         if (time >= directionChangeTime)
         {
-            time = time - directionChangeTime;
+            Debug.Log("Changed direction");
+            time = 0f;
             directionVector = genDirectionVector();
             
         }
@@ -33,11 +36,13 @@ public class Example : MonoBehaviour
     {
         directionVector = genDirectionVector();
         degrees = 45;
+        directionChangeTime = 1f;
     }
 
     
 
     Vector3 genDirectionVector() {
+        
         int x = Random.Range(0, 4);
         switch (x) { 
             case 0:

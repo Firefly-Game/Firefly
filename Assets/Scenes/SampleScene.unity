@@ -442,6 +442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1683623482}
+  directionChangeTime: 0
 --- !u!54 &798088209
 Rigidbody:
   m_ObjectHideFlags: 0
