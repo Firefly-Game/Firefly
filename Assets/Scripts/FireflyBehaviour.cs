@@ -7,11 +7,12 @@ public class FireflyBehaviour : MonoBehaviour
     public GameObject target;
 
     private float time = 0.0f;
-    public float directionChangeTime;
-    private Vector3 directionVector;
-    private Vector3 newDirectionVector;
-    private float degrees;
+    private Vector3 directionVector; // Current direction of the firefly
+    private Vector3 newDirectionVector; // Direction to change to
+    private float degrees; // How many degrees to spin around center per second
     private bool isChangingDirection = false;
+    private float startChangeTime; // Last timestamp when a change of direction started
+    private float directionChangeTime; // How long a direction change should take
 
     void Update()
     {
@@ -20,20 +21,24 @@ public class FireflyBehaviour : MonoBehaviour
 
         // Increase time 
         time += Time.deltaTime;
-        Debug.Log("Time: " + time);
-        Debug.Log("Direction change time: " + directionChangeTime);
+        //Debug.Log("Time: " + time);
+        //Debug.Log("Direction change time: " + directionChangeTime);
 
         // Change direction if it is time
         if (time >= directionChangeTime)
         {
             Debug.Log("Changed direction");
             time = 0f;
-            directionVector = genDirectionVector();
-            
+            newDirectionVector = genDirectionVector();
+            Debug.Log("Time to change");
+            Debug.Log("Current direction: " + directionVector);
+            Debug.Log("New direction: " + newDirectionVector);
+            isChangingDirection = true;
         }
 
         if (isChangingDirection )
         {
+            
             updateDirection();
         }
     }
@@ -46,14 +51,18 @@ public class FireflyBehaviour : MonoBehaviour
         Vector3 currRelCenter = directionVector - origin;
         Vector3 newRelCenter = newDirectionVector - origin;
 
-        float fracComplete = (Time.deltaTime - time) / directionChangeTime;
+        float fracComplete = (Time.time - startChangeTime) / directionChangeTime;
 
         directionVector = Vector3.Slerp(currRelCenter, newRelCenter, fracComplete);
         directionVector += origin;
 
+        Debug.Log("Fraction complete: " + fracComplete);
+
         if (fracComplete > 0.99)
         {
             isChangingDirection = false;
+            directionVector = newDirectionVector;
+            Debug.Log("Completed change");
         }
     }
 
@@ -63,16 +72,19 @@ public class FireflyBehaviour : MonoBehaviour
         directionVector = genDirectionVector();
         newDirectionVector = genDirectionVector();
         degrees = 45;
-        directionChangeTime = 1f;
+        directionChangeTime = 2f;
+        startChangeTime = Time.time;
         isChangingDirection = true;
+        
     }
 
 
 
     Vector3 genDirectionVector()
     {
-
+        Debug.Log("Generated direction");
         int x = Random.Range(0, 4);
+        startChangeTime = Time.time;
         switch (x)
         {
             case 0:
