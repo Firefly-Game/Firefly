@@ -2,7 +2,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class Example : MonoBehaviour
+public class FireflyBehaviour : MonoBehaviour
 {
     public GameObject target;
 
