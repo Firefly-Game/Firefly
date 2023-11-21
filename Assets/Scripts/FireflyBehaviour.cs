@@ -67,18 +67,23 @@ public class FireflyBehaviour : MonoBehaviour
         isChangingDirection = true;
     }
 
-    
 
-    Vector3 genDirectionVector() {
-        
-        int x = Random.Range(0, 2);
-        switch (x) { 
+
+    Vector3 genDirectionVector()
+    {
+
+        int x = Random.Range(0, 4);
+        switch (x)
+        {
             case 0:
-                return Quaternion.Euler(0, -45, 0) * directionVector;
+                return -Vector3.forward;
+            case 1:
+                return Vector3.forward;
+            case 2:
+                return Vector3.up;
             default:
-                return Quaternion.Euler(0, 45, 0) * directionVector;
-            
+                return Vector3.down;
         }
-    
+
     }
 }
