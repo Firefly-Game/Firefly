@@ -7,7 +7,7 @@ public class FireflyBehaviour : MonoBehaviour
     public GameObject target;
 
     private float time = 0.0f;
-    public float journeyTime;
+    public float directionChangeTime;
     private Vector3 directionVector;
     private Vector3 newDirectionVector;
     private float degrees;
@@ -21,10 +21,10 @@ public class FireflyBehaviour : MonoBehaviour
         // Increase time 
         time += Time.deltaTime;
         Debug.Log("Time: " + time);
-        Debug.Log("Direction change time: " + journeyTime);
+        Debug.Log("Direction change time: " + directionChangeTime);
 
         // Change direction if it is time
-        if (time >= journeyTime)
+        if (time >= directionChangeTime)
         {
             Debug.Log("Changed direction");
             time = 0f;
@@ -38,17 +38,18 @@ public class FireflyBehaviour : MonoBehaviour
         }
     }
 
+    // Referenced from unity documentation https://docs.unity3d.com/ScriptReference/Vector3.Slerp.html
     void updateDirection() {
 
-        Vector3 center = (newDirectionVector + directionVector) * 0.5f;
+        Vector3 origin = (newDirectionVector + directionVector) * 0.5f;
         
-        Vector3 currRelCenter = directionVector - center;
-        Vector3 newRelCenter = newDirectionVector - center;
+        Vector3 currRelCenter = directionVector - origin;
+        Vector3 newRelCenter = newDirectionVector - origin;
 
-        float fracComplete = (Time.deltaTime - time) / journeyTime;
+        float fracComplete = (Time.deltaTime - time) / directionChangeTime;
 
         directionVector = Vector3.Slerp(currRelCenter, newRelCenter, fracComplete);
-        directionVector += center;
+        directionVector += origin;
 
         if (fracComplete > 0.99)
         {
@@ -62,7 +63,7 @@ public class FireflyBehaviour : MonoBehaviour
         directionVector = genDirectionVector();
         newDirectionVector = genDirectionVector();
         degrees = 45;
-        journeyTime = 1f;
+        directionChangeTime = 1f;
         isChangingDirection = true;
     }
 
@@ -70,16 +71,13 @@ public class FireflyBehaviour : MonoBehaviour
 
     Vector3 genDirectionVector() {
         
-        int x = Random.Range(0, 4);
+        int x = Random.Range(0, 2);
         switch (x) { 
             case 0:
-                return -Vector3.forward;
-            case 1:
-                return Vector3.forward;
-            case 2:
-                return Vector3.up;
+                return Quaternion.Euler(0, -45, 0) * directionVector;
             default:
-                return Vector3.down;
+                return Quaternion.Euler(0, 45, 0) * directionVector;
+            
         }
     
     }
