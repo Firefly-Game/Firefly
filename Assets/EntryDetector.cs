@@ -15,4 +15,14 @@ public class EntryDetector : MonoBehaviour
     {
         
     }
+    public class CollisionDetector : MonoBehaviour
+    {
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Firefly")) // Make sure your object has this tag
+            {
+                other.gameObject.SetActive(false); // This disables the object
+            }
+        }
+    }
 }
