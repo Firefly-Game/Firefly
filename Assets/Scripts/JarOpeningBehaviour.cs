@@ -20,6 +20,7 @@ public class JarBehaviour : MonoBehaviour
             Debug.Log("A firefly has entered the jar");
             // Deactivate the firefly
             other.gameObject.SetActive(false);
+            Debug.Log("A firefly has been deactivated");
         }
     }
 }
