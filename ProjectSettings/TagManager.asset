@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - fly
+  - opening
   layers:
   - Default
   - TransparentFX
