@@ -27,12 +27,12 @@ public class FireflyBehaviour : MonoBehaviour
         // Change direction if it is time
         if (time >= directionChangeTime)
         {
-            Debug.Log("Changed direction");
+            //Debug.Log("Changed direction");
             time = 0f;
             newDirectionVector = genDirectionVector();
-            Debug.Log("Time to change");
-            Debug.Log("Current direction: " + directionVector);
-            Debug.Log("New direction: " + newDirectionVector);
+            //Debug.Log("Time to change");
+            //Debug.Log("Current direction: " + directionVector);
+            //Debug.Log("New direction: " + newDirectionVector);
             isChangingDirection = true;
         }
 
@@ -62,7 +62,7 @@ public class FireflyBehaviour : MonoBehaviour
         {
             isChangingDirection = false;
             directionVector = newDirectionVector;
-            Debug.Log("Completed change");
+            //Debug.Log("Completed change");
         }
     }
 
@@ -82,7 +82,7 @@ public class FireflyBehaviour : MonoBehaviour
 
     Vector3 genDirectionVector()
     {
-        Debug.Log("Generated direction");
+        //Debug.Log("Generated direction");
         int x = Random.Range(0, 4);
         startChangeTime = Time.time;
         switch (x)
