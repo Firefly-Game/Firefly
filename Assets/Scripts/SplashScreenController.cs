@@ -8,12 +8,16 @@ public class SplashScreenControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SceneManager.LoadScene("SampleScene");
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void StartGame()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 }
