@@ -1,17 +1,23 @@
 using UnityEngine.UI;
+using UnityEngine;
+using System.Collections;
 
-public class ScoreLabel : Text
+
+public class ScoreLabel : MonoBehaviour
 {
+    public Text label;
     public int score { get; private set; } = 0;
 
     void Update()
     {
-        text = score.ToString();
+        label.text = score.ToString();
+
     }
 
     // Call this when a firefly is caught
-    void OnCatch()
+    public void OnCatch()
     {
         score += 1;
+        Debug.Log(score);
     }
 }
