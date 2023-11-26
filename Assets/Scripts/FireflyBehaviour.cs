@@ -56,7 +56,7 @@ public class FireflyBehaviour : MonoBehaviour
         directionVector = Vector3.Slerp(currRelCenter, newRelCenter, fracComplete);
         directionVector += origin;
 
-        Debug.Log("Fraction complete: " + fracComplete);
+        //Debug.Log("Fraction complete: " + fracComplete);
 
         if (fracComplete > 0.99)
         {
