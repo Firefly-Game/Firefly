@@ -3,7 +3,7 @@ using UnityEngine;
 public class FireflySpawner : MonoBehaviour
 {
     const int initialNumber = 100;
-    float spawnRadius = 2.5f;
+    public static readonly float spawnRadius = 2.5f;
 
     void Start()
     {

@@ -78,6 +78,7 @@ public class FireflyBehaviour : MonoBehaviour
     {
         var renderer = GetComponent<MeshRenderer>();
         renderer.material.SetColor("_Color", typeColors[Type]);
+        renderer.material.SetColor("_EmissionColor", typeColors[Type]);
     }
 
     void Update()
@@ -107,6 +108,15 @@ public class FireflyBehaviour : MonoBehaviour
 
             updateDirection();
         }
+
+        PutBackOnToSphere();
+    }
+
+    private void PutBackOnToSphere()
+    {
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+        Vector3 directionToTarget = Vector3.Normalize(target.transform.position - transform.position);
+        transform.position += directionToTarget * (distance - FireflySpawner.spawnRadius);
     }
 
     private void OnTriggerEnter(Collider other)
