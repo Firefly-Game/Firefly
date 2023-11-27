@@ -159,8 +159,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -57.346, y: 144}
-  m_SizeDelta: {x: 114.6918, y: 96.564}
+  m_AnchoredPosition: {x: 451, y: -198}
+  m_SizeDelta: {x: 114.69, y: 101.8974}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &188778929
 MonoBehaviour:
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e14c78ba9096ab7489fe81cb20e2bbce, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 56e8da802e26d9545918c8c976f37bb0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -928,7 +928,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -173, y: 67.001}
+  m_AnchoredPosition: {x: -132, y: -80.05}
   m_SizeDelta: {x: 200, y: 134.0029}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1607060717
@@ -959,6 +959,7 @@ MonoBehaviour:
     Be careful
     not to catch a moth!
 
+
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -986,8 +987,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1022,7 +1023,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -49.413452, y: -280.26257, z: -375.54236, w: -36.125366}
+  m_margin: {x: -235.82465, y: -185.36218, z: -375.54236, w: -36.125366}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1164,8 +1165,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 62}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 80.66693}
+  m_SizeDelta: {x: 0, y: -37.3339}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2091235652
 MonoBehaviour:
@@ -1250,7 +1251,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: -21.333618}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
