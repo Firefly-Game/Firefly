@@ -1,10 +1,10 @@
-using UnityEditor.PackageManager;
+using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class FireflyBehaviour : MonoBehaviour
 {
     public GameObject target;
+    public ScoreLabel scoreLabel;
 
     private float time = 0.0f;
     private Vector3 directionVector; // Current direction of the firefly
@@ -13,6 +13,72 @@ public class FireflyBehaviour : MonoBehaviour
     private bool isChangingDirection = false;
     private float startChangeTime; // Last timestamp when a change of direction started
     private float directionChangeTime; // How long a direction change should take
+
+    public FireflyType Type { get; private set; } = FireflyType.Common;
+
+    private Dictionary<FireflyType, int> typeDistribution = new Dictionary<FireflyType, int>
+    {
+        { FireflyType.Common,    100 },
+        { FireflyType.Rare,      25 },
+        { FireflyType.Epic,      5 },
+        { FireflyType.Legendary, 1 },
+    };
+
+    private Dictionary<FireflyType, Color> typeColors = new Dictionary<FireflyType, Color>
+    {
+        { FireflyType.Common,    new Color(1f, 1f, 1f, 1f) },
+        { FireflyType.Rare,      new Color(0.12f, 0.64f, 1f) },
+        { FireflyType.Epic,      new Color(0.48f, 0.32f, 0.89f) },
+        { FireflyType.Legendary, new Color(0.95f, 0.77f, 0.06f) },
+    };
+
+    public enum FireflyType
+    {
+        Common,
+        Rare,
+        Epic,
+        Legendary,
+    }
+
+    void Start()
+    {
+        directionVector = genDirectionVector();
+        newDirectionVector = genDirectionVector();
+        degrees = 45;
+        directionChangeTime = 2f;
+        startChangeTime = Time.time;
+        isChangingDirection = true;
+
+        SetType();
+        SetColor();
+    }
+
+    private void SetType()
+    {
+        int total = 0;
+        foreach (var item in typeDistribution)
+        {
+            total += item.Value;
+        }
+
+        int random = (int)(Random.value * total);
+        int current = 0;
+        foreach (var item in typeDistribution)
+        {
+            current += item.Value;
+            if (current > random)
+            {
+                Type = item.Key;
+                break;
+            }
+        }
+    }
+
+    private void SetColor()
+    {
+        var renderer = GetComponent<MeshRenderer>();
+        renderer.material.SetColor("_Color", typeColors[Type]);
+    }
 
     void Update()
     {
@@ -36,18 +102,28 @@ public class FireflyBehaviour : MonoBehaviour
             isChangingDirection = true;
         }
 
-        if (isChangingDirection )
+        if (isChangingDirection)
         {
-            
+
             updateDirection();
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("opening"))
+        {
+            gameObject.SetActive(false);
+            scoreLabel.OnCatch(this);
+        }
+    }
+
     // Referenced from unity documentation https://docs.unity3d.com/ScriptReference/Vector3.Slerp.html
-    void updateDirection() {
+    void updateDirection()
+    {
 
         Vector3 origin = (newDirectionVector + directionVector) * 0.5f;
-        
+
         Vector3 currRelCenter = directionVector - origin;
         Vector3 newRelCenter = newDirectionVector - origin;
 
@@ -65,20 +141,6 @@ public class FireflyBehaviour : MonoBehaviour
             Debug.Log("Completed change");
         }
     }
-
-
-    void Start()
-    {
-        directionVector = genDirectionVector();
-        newDirectionVector = genDirectionVector();
-        degrees = 45;
-        directionChangeTime = 2f;
-        startChangeTime = Time.time;
-        isChangingDirection = true;
-        
-    }
-
-
 
     Vector3 genDirectionVector()
     {
