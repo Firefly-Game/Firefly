@@ -38,6 +38,8 @@ public class ObjectPool : MonoBehaviour
         return Objects[Objects.Count / 2];
     }
 
+   
+
     private void SetupObject(int index, Vector3 position, Quaternion rotation)
     {
         Objects[index].transform.position = position;

@@ -11,6 +11,8 @@ public class FireflySpawner : MonoBehaviour
         {
             Spawn();
         }
+
+        
     }
 
     void Update()
@@ -18,15 +20,19 @@ public class FireflySpawner : MonoBehaviour
 
     }
 
+    
+
     void Spawn()
     {
         ObjectPool.SharedInstance.InstantiateObject(
-            GetPositionOnSphere(spawnRadius),
+            GetPositionOnSphere(),
             transform.rotation
             );
     }
 
-    Vector3 GetPositionOnSphere(float radius)
+    
+
+    public Vector3 GetPositionOnSphere()
     {
         float x = 0, y = 0, z = 0;
         while (x == 0 & y == 0 & z == 0)

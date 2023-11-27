@@ -14,7 +14,7 @@ public class FireflyBehaviour : MonoBehaviour
     private float startChangeTime; // Last timestamp when a change of direction started
     private float directionChangeTime; // How long a direction change should take
 
-    public FireflyType Type { get; private set; } = FireflyType.Common;
+    public FireflyType Type { get; protected set; } = FireflyType.Common;
 
     private Dictionary<FireflyType, int> typeDistribution = new Dictionary<FireflyType, int>
     {
@@ -22,6 +22,7 @@ public class FireflyBehaviour : MonoBehaviour
         { FireflyType.Rare,      25 },
         { FireflyType.Epic,      5 },
         { FireflyType.Legendary, 1 },
+
     };
 
     private Dictionary<FireflyType, Color> typeColors = new Dictionary<FireflyType, Color>
@@ -30,6 +31,7 @@ public class FireflyBehaviour : MonoBehaviour
         { FireflyType.Rare,      new Color(0.12f, 0.64f, 1f) },
         { FireflyType.Epic,      new Color(0.48f, 0.32f, 0.89f) },
         { FireflyType.Legendary, new Color(0.95f, 0.77f, 0.06f) },
+        { FireflyType.Moth,      new Color(0f, 1f, 0f, 1f) },
     };
 
     public enum FireflyType
@@ -38,9 +40,17 @@ public class FireflyBehaviour : MonoBehaviour
         Rare,
         Epic,
         Legendary,
+        Moth
     }
 
     void Start()
+    {
+        InitValues();
+        SetType();
+        SetColor();
+    }
+
+    protected void InitValues()
     {
         directionVector = genDirectionVector();
         newDirectionVector = genDirectionVector();
@@ -48,9 +58,6 @@ public class FireflyBehaviour : MonoBehaviour
         directionChangeTime = 2f;
         startChangeTime = Time.time;
         isChangingDirection = true;
-
-        SetType();
-        SetColor();
     }
 
     private void SetType()
@@ -74,7 +81,7 @@ public class FireflyBehaviour : MonoBehaviour
         }
     }
 
-    private void SetColor()
+    protected void SetColor()
     {
         var renderer = GetComponent<MeshRenderer>();
         renderer.material.SetColor("_Color", typeColors[Type]);
@@ -93,12 +100,12 @@ public class FireflyBehaviour : MonoBehaviour
         // Change direction if it is time
         if (time >= directionChangeTime)
         {
-            Debug.Log("Changed direction");
+            //Debug.Log("Changed direction");
             time = 0f;
             newDirectionVector = genDirectionVector();
-            Debug.Log("Time to change");
-            Debug.Log("Current direction: " + directionVector);
-            Debug.Log("New direction: " + newDirectionVector);
+            //Debug.Log("Time to change");
+            //Debug.Log("Current direction: " + directionVector);
+            //Debug.Log("New direction: " + newDirectionVector);
             isChangingDirection = true;
         }
 
@@ -138,13 +145,13 @@ public class FireflyBehaviour : MonoBehaviour
         {
             isChangingDirection = false;
             directionVector = newDirectionVector;
-            Debug.Log("Completed change");
+            //Debug.Log("Completed change");
         }
     }
 
     Vector3 genDirectionVector()
     {
-        Debug.Log("Generated direction");
+        //Debug.Log("Generated direction");
         int x = Random.Range(0, 4);
         startChangeTime = Time.time;
         switch (x)
