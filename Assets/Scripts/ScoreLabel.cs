@@ -24,6 +24,5 @@ public class ScoreLabel : MonoBehaviour
     public void OnCatch(FireflyBehaviour firefly)
     {
         score += typeValues[firefly.Type];
-        Debug.Log(score);
     }
 }

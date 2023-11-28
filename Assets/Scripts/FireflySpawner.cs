@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class FireflySpawner : MonoBehaviour
@@ -11,11 +12,22 @@ public class FireflySpawner : MonoBehaviour
         {
             Spawn();
         }
+
+        StartCoroutine(TimedSpawn());
     }
 
     void Update()
     {
 
+    }
+
+    IEnumerator TimedSpawn()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2);
+            Spawn();
+        }
     }
 
     void Spawn()
