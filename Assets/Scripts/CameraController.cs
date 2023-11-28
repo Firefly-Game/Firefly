@@ -2,25 +2,20 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
+    private float sensitivity = 1;
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        float sensitivity = 1;
+        if (!MenuManager.isGamePaused) // Check if game is not paused
+        {
+            float rotateHorizontal = Input.GetAxis("Mouse X");
+            float rotateVertical = Input.GetAxis("Mouse Y");
+            float scroll = Input.mouseScrollDelta.y;
 
-        float rotateHorizontal = Input.GetAxis("Mouse X");
-        float rotateVertical = Input.GetAxis("Mouse Y");
-        float scroll = Input.mouseScrollDelta.y;
-
-        transform.RotateAround(transform.position, -Vector3.up, rotateHorizontal * sensitivity);
-        transform.RotateAround(transform.position, transform.right, rotateVertical * sensitivity);
-
-
-        transform.RotateAround(transform.position, transform.forward, scroll * sensitivity);
+            transform.RotateAround(transform.position, -Vector3.up, rotateHorizontal * sensitivity);
+            transform.RotateAround(transform.position, transform.right, rotateVertical * sensitivity);
+            transform.RotateAround(transform.position, transform.forward, scroll * sensitivity);
+        }
     }
 }
+
