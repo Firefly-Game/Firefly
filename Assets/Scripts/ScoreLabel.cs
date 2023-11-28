@@ -34,7 +34,6 @@ public class ScoreLabel : MonoBehaviour
         Debug.Log(firefly.tag);
 
         score += typeValues[firefly.Type];
-        Debug.Log(score);
     }
 
     private void EndGame()

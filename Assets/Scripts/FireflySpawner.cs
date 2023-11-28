@@ -1,9 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class FireflySpawner : MonoBehaviour
 {
     const int initialNumber = 100;
-    float spawnRadius = 2.5f;
+    public static readonly float spawnRadius = 2.5f;
 
     void Start()
     {
@@ -12,7 +13,7 @@ public class FireflySpawner : MonoBehaviour
             Spawn();
         }
 
-        
+        StartCoroutine(TimedSpawn());
     }
 
     void Update()
@@ -20,7 +21,14 @@ public class FireflySpawner : MonoBehaviour
 
     }
 
-    
+    IEnumerator TimedSpawn()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2);
+            Spawn();
+        }
+    }
 
     void Spawn()
     {
