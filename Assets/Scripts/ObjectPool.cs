@@ -10,13 +10,12 @@ public class ObjectPool : MonoBehaviour
 
     void Awake()
     {
+        Objects = new List<GameObject>();
         SharedInstance = this;
     }
 
     void Start()
-    {
-        AddObjectsToPool(1, firstObjectToSpawn);
-    }
+    { }
 
     public GameObject InstantiateObject(Vector3 position, Quaternion rotation, GameObject objectToPool)
     {
@@ -32,13 +31,11 @@ public class ObjectPool : MonoBehaviour
 
         // If no inactive objects found...
         // Double the pool size
-        AddObjectsToPool(Objects.Count, objectToPool);
+        AddObjectsToPool(Objects.Count == 0 ? 1 : Objects.Count, objectToPool);
 
         SetupObject(Objects.Count / 2, position, rotation);
         return Objects[Objects.Count / 2];
     }
-
-   
 
     private void SetupObject(int index, Vector3 position, Quaternion rotation)
     {
@@ -47,14 +44,10 @@ public class ObjectPool : MonoBehaviour
         Objects[index].SetActive(true);
     }
 
+    // Add *amount* number of *objectToPool* to the list of pooled objects
     private void AddObjectsToPool(int amount, GameObject objectToPool)
     {
         if (amount <= 0) return;
-
-        if (Objects == null)
-        {
-            Objects = new List<GameObject>();
-        }
 
         GameObject temporary;
         for (int i = 0; i < amount; i++)

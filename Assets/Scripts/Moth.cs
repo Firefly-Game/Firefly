@@ -1,19 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Moth : FireflyBehaviour
 {
-    
-    
+
+
     protected override void Start()
     {
-        
+
         base.Start();
         Type = FireflyType.Moth;
+        SetColor();
     }
 
-    
+
 
     protected override void FixedUpdate()
     {
