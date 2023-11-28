@@ -6,6 +6,7 @@ TagManager:
   tags:
   - fly
   - opening
+  - jar
   layers:
   - Default
   - TransparentFX

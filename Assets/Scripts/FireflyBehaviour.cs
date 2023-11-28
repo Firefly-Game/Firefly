@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +7,7 @@ public class FireflyBehaviour : MonoBehaviour
     public GameObject target;
     public ScoreLabel scoreLabel;
 
-    private float time = 0.0f;
-    private Vector3 directionVector; // Current direction of the firefly
-    private Vector3 newDirectionVector; // Direction to change to
-    private float degrees; // How many degrees to spin around center per second
-    private bool isChangingDirection = false;
-    private float startChangeTime; // Last timestamp when a change of direction started
-    private float directionChangeTime; // How long a direction change should take
+    private Vector3 direction;
 
     public FireflyType Type { get; private set; } = FireflyType.Common;
 
@@ -42,17 +37,12 @@ public class FireflyBehaviour : MonoBehaviour
 
     void Start()
     {
-        directionVector = genDirectionVector();
-        newDirectionVector = genDirectionVector();
-        degrees = 45;
-        directionChangeTime = 2f;
-        startChangeTime = Time.time;
-        isChangingDirection = true;
-
         SetType();
         SetColor();
+        StartCoroutine(ChangeDirection());
     }
 
+    // Randomly generate the type based on typeDistribution
     private void SetType()
     {
         int total = 0;
@@ -78,35 +68,32 @@ public class FireflyBehaviour : MonoBehaviour
     {
         var renderer = GetComponent<MeshRenderer>();
         renderer.material.SetColor("_Color", typeColors[Type]);
+        renderer.material.SetColor("_EmissionColor", typeColors[Type]);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // Rotate target
-        transform.RotateAround(target.transform.position, directionVector, degrees * Time.deltaTime);
+        GetComponent<Rigidbody>().AddForce(direction * 0.0000005f);
+        PutBackOntoSphere();
+    }
 
-        // Increase time 
-        time += Time.deltaTime;
-        //Debug.Log("Time: " + time);
-        //Debug.Log("Direction change time: " + directionChangeTime);
-
-        // Change direction if it is time
-        if (time >= directionChangeTime)
+    IEnumerator ChangeDirection()
+    {
+        while (true)
         {
-            Debug.Log("Changed direction");
-            time = 0f;
-            newDirectionVector = genDirectionVector();
-            Debug.Log("Time to change");
-            Debug.Log("Current direction: " + directionVector);
-            Debug.Log("New direction: " + newDirectionVector);
-            isChangingDirection = true;
-        }
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+            direction = Vector3.Cross(transform.position, randomDirection).normalized;
 
-        if (isChangingDirection)
-        {
-
-            updateDirection();
+            yield return new WaitForSeconds(Random.Range(0.3f, 1f));
         }
+    }
+
+    // Puts the Firefly back on to the sphere
+    private void PutBackOntoSphere()
+    {
+        float distance = Vector3.Distance(transform.position, target.transform.position);
+        Vector3 directionToTarget = Vector3.Normalize(target.transform.position - transform.position);
+        GetComponent<Rigidbody>().position += directionToTarget * (distance - FireflySpawner.spawnRadius);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -116,48 +103,29 @@ public class FireflyBehaviour : MonoBehaviour
             gameObject.SetActive(false);
             scoreLabel.OnCatch(this);
         }
-    }
-
-    // Referenced from unity documentation https://docs.unity3d.com/ScriptReference/Vector3.Slerp.html
-    void updateDirection()
-    {
-
-        Vector3 origin = (newDirectionVector + directionVector) * 0.5f;
-
-        Vector3 currRelCenter = directionVector - origin;
-        Vector3 newRelCenter = newDirectionVector - origin;
-
-        float fracComplete = (Time.time - startChangeTime) / directionChangeTime;
-
-        directionVector = Vector3.Slerp(currRelCenter, newRelCenter, fracComplete);
-        directionVector += origin;
-
-        //Debug.Log("Fraction complete: " + fracComplete);
-
-        if (fracComplete > 0.99)
+        else if (other.gameObject.CompareTag("jar"))
         {
-            isChangingDirection = false;
-            directionVector = newDirectionVector;
-            Debug.Log("Completed change");
+            HandleCollisionWithJar(other);
         }
     }
 
-    Vector3 genDirectionVector()
+    private void OnTriggerStay(Collider other)
     {
-        Debug.Log("Generated direction");
-        int x = Random.Range(0, 4);
-        startChangeTime = Time.time;
-        switch (x)
+        if (other.gameObject.CompareTag("jar"))
         {
-            case 0:
-                return -Vector3.forward;
-            case 1:
-                return Vector3.forward;
-            case 2:
-                return Vector3.up;
-            default:
-                return Vector3.down;
+            HandleCollisionWithJar(other);
         }
+    }
 
+    // Push the firefly away from the jar
+    private void HandleCollisionWithJar(Collider other)
+    {
+        Vector3 fromOther = transform.position - other.transform.position;
+
+        float ratio = other.transform.localScale.z / (fromOther.magnitude != 0 ? fromOther.magnitude : 0.00001f);
+        ratio = Mathf.Pow(ratio, 3);
+
+        Vector3 force = (fromOther * 0.000005f * ratio);
+        GetComponent<Rigidbody>().AddForce(force);
     }
 }
