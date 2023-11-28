@@ -38,6 +38,7 @@ public class ScoreLabel : MonoBehaviour
 
     private void EndGame()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
+        // UnityEditor.EditorApplication.isPlaying = false; // Uncomment if testing in the Unity Editor
     }
 }
