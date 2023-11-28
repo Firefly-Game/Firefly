@@ -7,7 +7,7 @@ public class FireflyBehaviour : MonoBehaviour
     public GameObject target;
     public ScoreLabel scoreLabel;
 
-    private Vector3 directionVector; // Current direction of the firefly
+    private Vector3 direction;
 
     public FireflyType Type { get; private set; } = FireflyType.Common;
 
@@ -42,6 +42,7 @@ public class FireflyBehaviour : MonoBehaviour
         StartCoroutine(ChangeDirection());
     }
 
+    // Randomly generate the type based on typeDistribution
     private void SetType()
     {
         int total = 0;
@@ -70,18 +71,10 @@ public class FireflyBehaviour : MonoBehaviour
         renderer.material.SetColor("_EmissionColor", typeColors[Type]);
     }
 
-    void Update()
-    {
-        //Debug.Log("pos: " + transform.position + ", local: " + transform.localPosition + ", rigid: " + GetComponent<Rigidbody>().position + ", from cam: " + transform.position.magnitude + ", velocity: " + GetComponent<Rigidbody>().velocity);
-
-        // Rotate target
-        //transform.RotateAround(target.transform.position, directionVector, degrees * Time.deltaTime);
-    }
-
     void FixedUpdate()
     {
-        GetComponent<Rigidbody>().AddForce(directionVector * 0.0000005f);
-        PutBackOnToSphere();
+        GetComponent<Rigidbody>().AddForce(direction * 0.0000005f);
+        PutBackOntoSphere();
     }
 
     IEnumerator ChangeDirection()
@@ -89,17 +82,14 @@ public class FireflyBehaviour : MonoBehaviour
         while (true)
         {
             Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-            directionVector = Vector3.Cross(transform.position, randomDirection).normalized;
-
-            float angle = Mathf.Acos(Vector3.Dot(directionVector, transform.position) / (directionVector.magnitude * transform.position.magnitude));
-            Debug.Log("Check: " + angle + " (this should be" + Mathf.PI / 2f + ")");
+            direction = Vector3.Cross(transform.position, randomDirection).normalized;
 
             yield return new WaitForSeconds(Random.Range(0.3f, 1f));
         }
     }
 
     // Puts the Firefly back on to the sphere
-    private void PutBackOnToSphere()
+    private void PutBackOntoSphere()
     {
         float distance = Vector3.Distance(transform.position, target.transform.position);
         Vector3 directionToTarget = Vector3.Normalize(target.transform.position - transform.position);
@@ -127,6 +117,7 @@ public class FireflyBehaviour : MonoBehaviour
         }
     }
 
+    // Push the firefly away from the jar
     private void HandleCollisionWithJar(Collider other)
     {
         Vector3 fromOther = transform.position - other.transform.position;
