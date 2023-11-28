@@ -96,7 +96,7 @@ public class FireflyBehaviour : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, target.transform.position);
         Vector3 directionToTarget = Vector3.Normalize(target.transform.position - transform.position);
-        GetComponent<Rigidbody>().position += directionToTarget * (distance - FireflySpawner.spawnRadius);
+        GetComponent<Rigidbody>().position += directionToTarget * (distance - Spawner.spawnRadius);
     }
 
     protected virtual void OnTriggerEnter(Collider other)

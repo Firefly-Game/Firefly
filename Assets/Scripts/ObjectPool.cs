@@ -3,21 +3,19 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-    public static ObjectPool SharedInstance { get; private set; }
     public List<GameObject> Objects { get; private set; }
 
-    public GameObject firstObjectToSpawn;
+    public GameObject objectToPool;
 
     void Awake()
     {
         Objects = new List<GameObject>();
-        SharedInstance = this;
     }
 
     void Start()
     { }
 
-    public GameObject InstantiateObject(Vector3 position, Quaternion rotation, GameObject objectToPool)
+    public GameObject InstantiateObject(Vector3 position, Quaternion rotation)
     {
         // Get the first inactive object
         for (int i = 0; i < Objects.Count; i++)
@@ -31,7 +29,7 @@ public class ObjectPool : MonoBehaviour
 
         // If no inactive objects found...
         // Double the pool size
-        AddObjectsToPool(Objects.Count == 0 ? 1 : Objects.Count, objectToPool);
+        AddObjectsToPool(Objects.Count == 0 ? 1 : Objects.Count);
 
         SetupObject(Objects.Count / 2, position, rotation);
         return Objects[Objects.Count / 2];
@@ -45,7 +43,7 @@ public class ObjectPool : MonoBehaviour
     }
 
     // Add *amount* number of *objectToPool* to the list of pooled objects
-    private void AddObjectsToPool(int amount, GameObject objectToPool)
+    private void AddObjectsToPool(int amount)
     {
         if (amount <= 0) return;
 
