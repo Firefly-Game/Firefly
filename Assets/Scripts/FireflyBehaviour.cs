@@ -81,7 +81,7 @@ public class FireflyBehaviour : MonoBehaviour
         GetComponent<Rigidbody>().AddForce(direction * 0.0000005f);
         PutBackOntoSphere();
 
-        Debug.Log(direction);
+        Debug.Log(GetComponent<Rigidbody>().velocity);
     }
 
     protected virtual IEnumerator ChangeDirection()

@@ -1479,8 +1479,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireflyPool: {fileID: 35459725}
   mothPool: {fileID: 242788386}
-  fireflyCount: 0
-  mothCount: 1
+  fireflyCount: 50
+  mothCount: 5
 --- !u!1 &1707364241
 GameObject:
   m_ObjectHideFlags: 0
