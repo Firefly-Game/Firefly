@@ -11,6 +11,7 @@ public class ScoreLabel : MonoBehaviour
         { FireflyBehaviour.FireflyType.Rare,      3 },
         { FireflyBehaviour.FireflyType.Epic,      8 },
         { FireflyBehaviour.FireflyType.Legendary, 25 },
+        { FireflyBehaviour.FireflyType.Moth, 0 }
     };
 
     public int score { get; private set; } = 0;
@@ -23,6 +24,20 @@ public class ScoreLabel : MonoBehaviour
     // Call this when a firefly is caught
     public void OnCatch(FireflyBehaviour firefly)
     {
+        
+        // If we caught moth, end game
+        if(firefly.tag.Equals("moth"))
+        {
+            EndGame();
+        }
+
+        Debug.Log(firefly.tag);
+
         score += typeValues[firefly.Type];
+    }
+
+    private void EndGame()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
     }
 }

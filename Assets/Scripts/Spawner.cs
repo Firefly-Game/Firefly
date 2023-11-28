@@ -1,24 +1,29 @@
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class FireflySpawner : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
-    const int initialNumber = 100;
+    public ObjectPool fireflyPool;
+    public ObjectPool mothPool;
     public static readonly float spawnRadius = 2.5f;
+
+    public int fireflyCount = 100;
+    public int mothCount = 5;
 
     void Start()
     {
-        for (int i = 0; i < initialNumber; i++)
+        for (int i = 0; i < fireflyCount; i++)
         {
-            Spawn();
+            SpawnFirefly();
+        }
+
+        for (int i = 0; i < mothCount; i++)
+        {
+            SpawnMoth();
         }
 
         StartCoroutine(TimedSpawn());
-    }
-
-    void Update()
-    {
-
     }
 
     IEnumerator TimedSpawn()
@@ -26,19 +31,27 @@ public class FireflySpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(2);
-            Spawn();
+            SpawnFirefly();
         }
     }
 
-    void Spawn()
+    void SpawnFirefly()
     {
-        ObjectPool.SharedInstance.InstantiateObject(
-            GetPositionOnSphere(spawnRadius),
+        fireflyPool.InstantiateObject(
+            GetPositionOnSphere(),
             transform.rotation
             );
     }
 
-    Vector3 GetPositionOnSphere(float radius)
+    void SpawnMoth()
+    {
+        mothPool.InstantiateObject(
+            GetPositionOnSphere(),
+            transform.rotation
+            );
+    }
+
+    public Vector3 GetPositionOnSphere()
     {
         float x = 0, y = 0, z = 0;
         while (x == 0 & y == 0 & z == 0)

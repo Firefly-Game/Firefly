@@ -7,9 +7,9 @@ public class FireflyBehaviour : MonoBehaviour
     public GameObject target;
     public ScoreLabel scoreLabel;
 
-    private Vector3 direction;
+    protected Vector3 direction;
 
-    public FireflyType Type { get; private set; } = FireflyType.Common;
+    public FireflyType Type { get; protected set; } = FireflyType.Common;
 
     private Dictionary<FireflyType, int> typeDistribution = new Dictionary<FireflyType, int>
     {
@@ -17,6 +17,7 @@ public class FireflyBehaviour : MonoBehaviour
         { FireflyType.Rare,      25 },
         { FireflyType.Epic,      5 },
         { FireflyType.Legendary, 1 },
+
     };
 
     private Dictionary<FireflyType, Color> typeColors = new Dictionary<FireflyType, Color>
@@ -25,6 +26,7 @@ public class FireflyBehaviour : MonoBehaviour
         { FireflyType.Rare,      new Color(0.12f, 0.64f, 1f) },
         { FireflyType.Epic,      new Color(0.48f, 0.32f, 0.89f) },
         { FireflyType.Legendary, new Color(0.95f, 0.77f, 0.06f) },
+        { FireflyType.Moth,      new Color(0f, 1f, 0f, 1f) },
     };
 
     public enum FireflyType
@@ -33,17 +35,20 @@ public class FireflyBehaviour : MonoBehaviour
         Rare,
         Epic,
         Legendary,
+        Moth
     }
 
-    void Start()
+    protected virtual void Start()
     {
+        target = FindAnyObjectByType<Camera>().gameObject;
+        scoreLabel = FindAnyObjectByType<ScoreLabel>();
         SetType();
         SetColor();
         StartCoroutine(ChangeDirection());
     }
 
     // Randomly generate the type based on typeDistribution
-    private void SetType()
+    protected virtual void SetType()
     {
         int total = 0;
         foreach (var item in typeDistribution)
@@ -64,20 +69,22 @@ public class FireflyBehaviour : MonoBehaviour
         }
     }
 
-    private void SetColor()
+    protected void SetColor()
     {
         var renderer = GetComponent<MeshRenderer>();
         renderer.material.SetColor("_Color", typeColors[Type]);
         renderer.material.SetColor("_EmissionColor", typeColors[Type]);
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         GetComponent<Rigidbody>().AddForce(direction * 0.0000005f);
         PutBackOntoSphere();
+
+        Debug.Log(GetComponent<Rigidbody>().velocity);
     }
 
-    IEnumerator ChangeDirection()
+    protected virtual IEnumerator ChangeDirection()
     {
         while (true)
         {
@@ -89,14 +96,14 @@ public class FireflyBehaviour : MonoBehaviour
     }
 
     // Puts the Firefly back on to the sphere
-    private void PutBackOntoSphere()
+    protected virtual void PutBackOntoSphere()
     {
         float distance = Vector3.Distance(transform.position, target.transform.position);
         Vector3 directionToTarget = Vector3.Normalize(target.transform.position - transform.position);
-        GetComponent<Rigidbody>().position += directionToTarget * (distance - FireflySpawner.spawnRadius);
+        GetComponent<Rigidbody>().position += directionToTarget * (distance - Spawner.spawnRadius);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("opening"))
         {
@@ -109,7 +116,7 @@ public class FireflyBehaviour : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    protected virtual void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("jar"))
         {
@@ -118,7 +125,7 @@ public class FireflyBehaviour : MonoBehaviour
     }
 
     // Push the firefly away from the jar
-    private void HandleCollisionWithJar(Collider other)
+    protected virtual void HandleCollisionWithJar(Collider other)
     {
         Vector3 fromOther = transform.position - other.transform.position;
 
