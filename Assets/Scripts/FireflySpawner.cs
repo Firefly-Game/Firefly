@@ -1,17 +1,40 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class FireflySpawner : MonoBehaviour
 {
-    const int initialNumber = 100;
+    public GameObject firefly;
+    public GameObject moth;
     public static readonly float spawnRadius = 2.5f;
 
+    // The amount of different objects we want to spawn
+    private Dictionary<GameObject, int> amountToSpawn;
+
     void Start()
+        // Instatiate dictionary
     {
-        for (int i = 0; i < initialNumber; i++)
+        amountToSpawn = new()
+    {
+        { firefly,    95 },
+        { moth,      5 },
+    };
+
+
+        // Spawn the amount of each gameobject
+        foreach (KeyValuePair<GameObject, int> kvp in amountToSpawn)
         {
-            Spawn();
+            Debug.Log("Object to spawn: " + kvp.Key);
+            Debug.Log("Amount: " + kvp.Value);
+            for (int i = 0; i < kvp.Value; i++)
+            {
+                Spawn(kvp.Key);
+            }
         }
+        
 
         StartCoroutine(TimedSpawn());
     }
@@ -26,15 +49,15 @@ public class FireflySpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(2);
-            Spawn();
+            Spawn(firefly); // Spawn fireflies only
         }
     }
 
-    void Spawn()
+    void Spawn(GameObject gameObject)
     {
         ObjectPool.SharedInstance.InstantiateObject(
             GetPositionOnSphere(),
-            transform.rotation
+            transform.rotation, gameObject
             );
     }
 

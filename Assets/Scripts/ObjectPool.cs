@@ -6,7 +6,7 @@ public class ObjectPool : MonoBehaviour
     public static ObjectPool SharedInstance { get; private set; }
     public List<GameObject> Objects { get; private set; }
 
-    public GameObject objectToPool;
+    public GameObject firstObjectToSpawn;
 
     void Awake()
     {
@@ -15,10 +15,10 @@ public class ObjectPool : MonoBehaviour
 
     void Start()
     {
-        AddObjectsToPool(1);
+        AddObjectsToPool(1, firstObjectToSpawn);
     }
 
-    public GameObject InstantiateObject(Vector3 position, Quaternion rotation)
+    public GameObject InstantiateObject(Vector3 position, Quaternion rotation, GameObject objectToPool)
     {
         // Get the first inactive object
         for (int i = 0; i < Objects.Count; i++)
@@ -32,7 +32,7 @@ public class ObjectPool : MonoBehaviour
 
         // If no inactive objects found...
         // Double the pool size
-        AddObjectsToPool(Objects.Count);
+        AddObjectsToPool(Objects.Count, objectToPool);
 
         SetupObject(Objects.Count / 2, position, rotation);
         return Objects[Objects.Count / 2];
@@ -47,7 +47,7 @@ public class ObjectPool : MonoBehaviour
         Objects[index].SetActive(true);
     }
 
-    private void AddObjectsToPool(int amount)
+    private void AddObjectsToPool(int amount, GameObject objectToPool)
     {
         if (amount <= 0) return;
 
