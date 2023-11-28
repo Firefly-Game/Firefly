@@ -40,6 +40,8 @@ public class FireflyBehaviour : MonoBehaviour
 
     protected virtual void Start()
     {
+        target = FindAnyObjectByType<Camera>().gameObject;
+        scoreLabel = FindAnyObjectByType<ScoreLabel>();
         SetType();
         SetColor();
         StartCoroutine(ChangeDirection());
@@ -78,6 +80,8 @@ public class FireflyBehaviour : MonoBehaviour
     {
         GetComponent<Rigidbody>().AddForce(direction * 0.0000005f);
         PutBackOntoSphere();
+
+        Debug.Log(direction);
     }
 
     protected virtual IEnumerator ChangeDirection()

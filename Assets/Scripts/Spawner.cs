@@ -23,7 +23,7 @@ public class Spawner : MonoBehaviour
             SpawnMoth();
         }
 
-        StartCoroutine(TimedSpawn());
+        //StartCoroutine(TimedSpawn());
     }
 
     IEnumerator TimedSpawn()
