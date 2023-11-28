@@ -7,7 +7,7 @@ public class FireflyBehaviour : MonoBehaviour
     public GameObject target;
     public ScoreLabel scoreLabel;
 
-    private Vector3 direction;
+    protected Vector3 direction;
 
     public FireflyType Type { get; protected set; } = FireflyType.Common;
 
@@ -38,7 +38,7 @@ public class FireflyBehaviour : MonoBehaviour
         Moth
     }
 
-    void Start()
+    protected virtual void Start()
     {
         SetType();
         SetColor();
@@ -46,7 +46,7 @@ public class FireflyBehaviour : MonoBehaviour
     }
 
     // Randomly generate the type based on typeDistribution
-    private void SetType()
+    protected virtual void SetType()
     {
         int total = 0;
         foreach (var item in typeDistribution)
@@ -74,13 +74,13 @@ public class FireflyBehaviour : MonoBehaviour
         renderer.material.SetColor("_EmissionColor", typeColors[Type]);
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         GetComponent<Rigidbody>().AddForce(direction * 0.0000005f);
         PutBackOntoSphere();
     }
 
-    IEnumerator ChangeDirection()
+    protected virtual IEnumerator ChangeDirection()
     {
         while (true)
         {
@@ -92,14 +92,14 @@ public class FireflyBehaviour : MonoBehaviour
     }
 
     // Puts the Firefly back on to the sphere
-    private void PutBackOntoSphere()
+    protected virtual void PutBackOntoSphere()
     {
         float distance = Vector3.Distance(transform.position, target.transform.position);
         Vector3 directionToTarget = Vector3.Normalize(target.transform.position - transform.position);
         GetComponent<Rigidbody>().position += directionToTarget * (distance - FireflySpawner.spawnRadius);
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("opening"))
         {
@@ -112,7 +112,7 @@ public class FireflyBehaviour : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    protected virtual void OnTriggerStay(Collider other)
     {
         if (other.gameObject.CompareTag("jar"))
         {
@@ -121,7 +121,7 @@ public class FireflyBehaviour : MonoBehaviour
     }
 
     // Push the firefly away from the jar
-    private void HandleCollisionWithJar(Collider other)
+    protected virtual void HandleCollisionWithJar(Collider other)
     {
         Vector3 fromOther = transform.position - other.transform.position;
 
